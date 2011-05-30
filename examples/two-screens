@@ -1,0 +1,12 @@
+# create a new file
+echo 'Hello, Oraide!' >> hello_oraide.txt
+
+# Read the file.
+# Reading files is fun.
+cat hello_oraide.txt
+
+# Send something to another screen window.
+# This is good for background operations that you won't necessarily
+# demonstrate.
+1: echo 'Coming to you live from another window!'
+1: echo 'Twice!'

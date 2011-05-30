@@ -1,0 +1,9 @@
+# Create a new file
+echo 'Hello, Oraide!' >> hello_oraide.txt
+
+# Read the file.
+# You should see 'Hello, Oraide!'
+cat hello_oraide.txt
+
+# Delete the file.
+rm hello_oraide.txt

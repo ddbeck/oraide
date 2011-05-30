@@ -1,0 +1,57 @@
+======
+Oraide
+======
+
+Oraide is a tool to spare presenters the risky proposition of entering
+terminal commands and giving a presentation at the same time. Oraide replays
+presentation scripts composed of notes and terminal commands into a GNU Screen
+session. In addition to presentations, it's also useful for recording
+screencasts.
+
+The name *Oraide* is a portmanteau of *orate* and *aide*.
+
+
+Usage
+-----
+
+Before giving your presentation, prepare a script file. A script file looks
+like this::
+
+    # connect to the remote server
+    ssh host-name
+
+    # create a new file
+    echo 'Hello, World!' >> hello_world.txt
+
+    # Read the file.
+    # And by that I mean cat it.
+    cat hello_world.txt
+
+    # Background activity
+    1: ssh host-name
+    1: rm hello_world.txt
+
+Script files are interpreted by these rules:
+
+* Blank lines are ignored.
+
+* Lines starting with a hash are presenters notes. They're not executed.
+
+* All other lines are commands to be sent to the Screen session. If such a
+  line starts with a number and a colon, the command is sent to the Screen
+  window of the name number. Otherwise, the command is sent to window 0.
+
+Once you have a script ready, you can run Oraide. Running Oraide requires a
+script and a Screen session as command line arguments. Thus, run Oraide like
+To run the script against a specific Screen session like so: `oraide script
+session`, where `script` and `session` are the name of the Oraide script and
+Screen sessions respectively. For example, to run a script named `conference`
+on a Screen session named `demo`, enter `oraide conference demo`.
+
+So, a complete example would look something like this::
+
+    $ screen -S demo
+    # put that screen session on the projector
+    # open a new terminal session on your laptop display
+    $ oraide my_great_presentation demo
+    Starting my_great_presentation. Press ENTER to advance script.
