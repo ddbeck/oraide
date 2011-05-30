@@ -39,7 +39,7 @@ Script files are interpreted by these rules:
 
 * All other lines are commands to be sent to the Screen session. If such a
   line starts with a number and a colon, the command is sent to the Screen
-  window of the name number. Otherwise, the command is sent to window 0.
+  window of the same number. Otherwise, the command is sent to window 0.
 
 Once you have a script ready, you can run Oraide. Running Oraide requires a
 script and a Screen session as command line arguments. Thus, run Oraide like
