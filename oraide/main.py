@@ -20,7 +20,7 @@ def parse_args():
 
 
 def send_command(session, window, command):
-    """docstring for send_command"""
+    """Send a command to a GNU Scree on a specified session and window."""
     args = ['screen',
             '-S', session,
             '-p', str(window),
