@@ -43,10 +43,10 @@ Script files are interpreted by these rules:
 
 Once you have a script ready, you can run Oraide. Running Oraide requires a
 script and a Screen session as command line arguments. Thus, run Oraide like
-To run the script against a specific Screen session like so: `oraide script
-session`, where `script` and `session` are the name of the Oraide script and
+To run the script against a specific Screen session like so: ``oraide script
+session``, where `script` and `session` are the name of the Oraide script and
 Screen sessions respectively. For example, to run a script named `conference`
-on a Screen session named `demo`, enter `oraide conference demo`.
+on a Screen session named `demo`, enter ``oraide conference demo``.
 
 So, a complete example would look something like this::
 
