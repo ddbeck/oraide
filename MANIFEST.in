@@ -1,3 +1,0 @@
-include LICENSE AUTHORS README
-include *.py
-recursive-include examples *
