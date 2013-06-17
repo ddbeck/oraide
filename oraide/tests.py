@@ -3,11 +3,14 @@ import subprocess
 import time
 import unittest
 
-from oraide import send_keys, ConnectionFailedError, SessionNotFoundError
+from oraide import (send_keys, Session, ConnectionFailedError,
+                    SessionNotFoundError)
+
+TESTING_SESSION_NAME = 'oraide_test_session'
 
 
 class TestSendKeys(unittest.TestCase):
-    session_name = 'oraide_test_session'
+    session_name = TESTING_SESSION_NAME
     verification_string = '7hh50zxnxj'
 
     def start_tmux_session(self):
@@ -53,4 +56,24 @@ class TestSendKeys(unittest.TestCase):
             send_keys(self.session_name, self.verification_string)
 
     def tearDown(self):
-        subprocess.call(['tmux', 'kill-server'])
+        proc = subprocess.Popen(['tmux', 'kill-server'], stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
+        proc.communicate()
+
+
+class TestSession(unittest.TestCase):
+    session_name = TESTING_SESSION_NAME
+
+    def test_auto_advance_context_manager_restores_state(self):
+        s1 = Session(self.session_name, enable_auto_advance=True)
+        s2 = Session(self.session_name)
+
+        self.assertTrue(s1.auto_advancing)
+        with s1.auto_advance():
+            self.assertTrue(s1.auto_advancing)
+        self.assertTrue(s1.auto_advancing)
+
+        self.assertFalse(s2.auto_advancing)
+        with s2.auto_advance():
+            self.assertTrue(s1.auto_advancing)
+        self.assertFalse(s2.auto_advancing)
