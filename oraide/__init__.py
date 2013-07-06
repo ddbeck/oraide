@@ -162,7 +162,8 @@ class Session(object):
             keys from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
         """
         if teletype:
-            self.teletype(keys)
+            with self.auto_advance():
+                self.teletype(keys)
         else:
             self.send_keys(keys)
 
