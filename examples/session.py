@@ -1,7 +1,6 @@
 """A demonstration of the ``Session`` API."""
 
 import oraide
-import textwrap
 
 
 EARNESTNESS = """\
