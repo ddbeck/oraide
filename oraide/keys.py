@@ -1,6 +1,6 @@
 """This module provides shortcuts for sending special keystrokes to tmux
 sessions. The functions and constants are typically used with
-:meth:`oraide.Session.press_key`, or the ``after`` paramter on certain
+:meth:`oraide.Session.press_key`, or the ``after`` parameter on certain
 :class:`oraide.Session` methods.
 
 The constants of this module are provided as a Pythonic substitute for the
