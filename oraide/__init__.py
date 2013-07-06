@@ -119,6 +119,8 @@ class Session(object):
         """Type ``keys`` character-by-character, as if you were actually typing
     @prompt
     def teletype(self, keys, delay=None):
+        """teletype(keys, delay=90)
+        Type ``keys`` character-by-character, as if you were actually typing
         them by hand.
 
         The ``delay`` parameter adds time between each keystroke for
@@ -144,7 +146,8 @@ class Session(object):
 
     @prompt
     def enter(self, keys=None, teletype=True, after=keyboard.enter):
-        """Type ``keys``, then press :kbd:`Enter`.
+        """enter(keys=None, teletype=True, after='Enter')
+        Type ``keys``, then press :kbd:`Enter`.
 
         By default, typing character-by-character is enabled with the
         ``teletype`` parameter.
@@ -167,7 +170,8 @@ class Session(object):
 
     @contextmanager
     def auto_advance(self):
-        """Return a context manager that disables prompts before sending
+        """auto_advance()
+        Return a context manager that disables prompts before sending
         keystrokes to the session. For example:
 
         .. code-block:: python
