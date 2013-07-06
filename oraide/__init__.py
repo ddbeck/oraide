@@ -138,6 +138,7 @@ class Session(object):
         delay_variation = delay / 10
 
         with self.auto_advance():
+            logger.info('[%s] Sending %s', self.session, repr(keys))
             for key in keys:
                 self.send_keys(key)
 
