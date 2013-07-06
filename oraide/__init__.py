@@ -118,7 +118,6 @@ class Session(object):
         """
         send_keys(self.session, keys, literal=literal)
 
-        """Type ``keys`` character-by-character, as if you were actually typing
     @prompt
     def teletype(self, keys, delay=None):
         """teletype(keys, delay=90)
