@@ -7,7 +7,7 @@ import time
 from . import keys as keyboard
 
 
-logger = logging.getLogger('oraide')
+logger = logging.getLogger(__name__)
 
 
 class ConnectionFailedError(Exception):
