@@ -131,7 +131,8 @@ class Session(object):
             self.send_keys(keys)
 
         with self.auto_advance():
-            self.send_keys(after, literal=False)
+            if after:
+                self.send_keys(after, literal=False)
 
     @contextmanager
     def auto_advance(self):
