@@ -158,8 +158,8 @@ class Session(object):
             may only be literal keystrokes, not keynames to be looked up by
             tmux.
         :param after: additional keystrokes to send to the session with
-            ``literal`` set to ``False`` (typically for appending a special keys
-            from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
+            ``literal`` set to ``False`` (typically for appending a special
+            keys from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
         """
         if teletype:
             self.teletype(keys)
