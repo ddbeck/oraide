@@ -181,8 +181,7 @@ class Session(object):
            session.enter('vim some_file.txt')    # prompt first
            with session.auto_advance():          # disables prompts
                session.teletype('jjji')
-               session.enter('Hello, World!')
-               session.press_key(keys.escape)
+               session.enter('Hello, World!', after=keys.escape)
            session.enter(':x')                   # prompt first
         """
         initial_auto_state = self.auto_advancing
