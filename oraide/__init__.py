@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from functools import wraps
 import logging
 import random
 import subprocess
@@ -61,8 +62,17 @@ def send_keys(session, keys, literal=True):
             raise
 
 
-def prompt(keys, verb="send"):
-    raw_input("Press enter to {}: {}".format(verb, keys))
+def prompt(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        self, keys = args
+        if not args[0].auto_advancing:
+            raw_input("[{session}] Press enter to send {keys}".format(
+                keys=repr(keys),
+                session=repr(self.session))
+            )
+        return fn(*args, **kwargs)
+    return wrapper
 
 
 class Session(object):
@@ -90,6 +100,7 @@ class Session(object):
         send_keys(self.session, keys, literal=literal)
 
         """Type ``keys`` character-by-character, as if you were actually typing
+    @prompt
     def teletype(self, keys, delay=None):
         them by hand.
 
@@ -114,6 +125,7 @@ class Session(object):
                                                delay + delay_variation)
                 time.sleep(current_delay / 1000.0)
 
+    @prompt
     def enter(self, keys=None, teletype=True, after=keyboard.enter):
         """Type ``keys``, then press :kbd:`Enter`.
 
@@ -127,9 +139,6 @@ class Session(object):
             ``literal`` set to ``False`` (typically for appending a special keys
             from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
         """
-        if not self.auto_advancing:
-            prompt(keys)
-
         if teletype:
             self.teletype(keys)
         else:
