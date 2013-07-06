@@ -11,7 +11,17 @@ from . import keys as keyboard
 logger = logging.getLogger(__name__)
 
 
-class ConnectionFailedError(Exception):
+class TmuxError(subprocess.CalledProcessError):
+    """The command sent to tmux returned a non-zero exit status. This is an
+    unrecognized tmux error.
+
+    This exception type inherits from :exc:`subprocess.CalledProcessError`,
+    which adds ``returncode``, ``cmd``, and ``output`` attributes.
+    """
+    pass
+
+
+class ConnectionFailedError(TmuxError):
     """The tmux server connection failed (often because the server was not
     running at the time the command was sent).
     """
@@ -19,12 +29,16 @@ class ConnectionFailedError(Exception):
         return 'Connection to tmux server failed.'
 
 
-class SessionNotFoundError(Exception):
+class SessionNotFoundError(TmuxError):
     """The tmux session was not found (but a connection to tmux server was
     established).
+
+    This exception type adds another attribute, ``session``, for your debugging
+    convenience.
     """
-    def __init__(self, session):
-        self.session = session
+    def __init__(self, *args, **kwargs):
+        self.session = kwargs.pop('session', None)
+        return super(SessionNotFoundError, self).__init__(*args, **kwargs)
 
     def __str__(self):
         return 'tmux session {} not found.'.format(repr(self.session))
@@ -50,14 +64,17 @@ def send_keys(session, keys, literal=True):
     args.append("-t{}".format(session))
     args.append(keys)
 
-    logger.info('Sending keys with command: {}'.format(' '.join(args)))
+    cmd = ' '.join(args)
+
+    logger.debug('Sending keys with command: %s', cmd)
     try:
         subprocess.check_output(args, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as exc:
         if 'session not found' in exc.output:
-            raise SessionNotFoundError(session)
+            raise SessionNotFoundError(exc.returncode, cmd, exc.output,
+                                       session=session)
         elif 'failed to connect to server' in exc.output:
-            raise ConnectionFailedError
+            raise ConnectionFailedError(exc.returncode, cmd, exc.output)
         else:
             raise
 
