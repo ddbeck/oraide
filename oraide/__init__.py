@@ -99,7 +99,9 @@ class Session(object):
 
     :param session: the name of a tmux session
     :param enable_auto_advance: whether to send keystrokes to the session
-        immediately, or wait for confirmation
+        immediately, or wait for confirmation, on certain methods
+    :param int teletype_delay: the delay between keystrokes for the
+        :meth:`teletype` method (for overriding the default of 90 milliseconds)
     """
 
     def __init__(self, session, enable_auto_advance=False,
