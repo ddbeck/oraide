@@ -81,7 +81,7 @@ class Session(object):
         self.auto_advancing = enable_auto_advance
         self.teletype_delay = teletype_delay
 
-    def send_keys(self, keys, literal=True, after=None):
+    def send_keys(self, keys, literal=True):
         """Send each literal character in ``keys`` to the session.
 
         :param keys: literal keystrokes to send to the session
