@@ -126,7 +126,7 @@ Session management
 ------------------
 
 While :func:`send_keys` is useful, it's tedious to re-enter the session name every time.
-To alleviate that frustration, and introduce some more features, Oriade provides the :class:`Session` class.
+To alleviate that frustration, and introduce some more features, Oraide provides the :class:`Session` class.
 Here's a simple script that demonstrates its use:
 
 .. code-block:: python
