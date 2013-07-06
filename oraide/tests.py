@@ -56,7 +56,8 @@ class TestSendKeys(unittest.TestCase):
             send_keys(self.session_name, self.verification_string)
 
     def tearDown(self):
-        proc = subprocess.Popen(['tmux', 'kill-server'], stdout=subprocess.PIPE,
+        proc = subprocess.Popen(['tmux', 'kill-server'],
+                                stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT)
         proc.communicate()
 
