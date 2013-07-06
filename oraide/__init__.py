@@ -115,6 +115,8 @@ class Session(object):
 
         :param keys: literal keystrokes to send to the session
         :param literal: whether to prevent tmux from looking up keynames
+
+        .. seealso:: :func:`send_keys`
         """
         send_keys(self.session, keys, literal=literal)
 
@@ -128,6 +130,8 @@ class Session(object):
         verisimilitude. The actual time between keystrokes varies up to ten
         percent more or less than the nominal value. The default, 90
         milliseconds, approximates a fast typist.
+
+        .. note:: |auto-advancing|
 
         :param keys: the literal keys to be typed
         :param int delay: the nominal time between keystrokes in milliseconds.
@@ -153,6 +157,8 @@ class Session(object):
 
         By default, typing character-by-character is enabled with the
         ``teletype`` parameter.
+
+        .. note:: |auto-advancing|
 
         :param keys: the keystroke to be sent to the to the session. These keys
             may only be literal keystrokes, not keynames to be looked up by
