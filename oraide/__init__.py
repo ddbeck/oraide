@@ -75,9 +75,11 @@ class Session(object):
         immediately, or wait for confirmation
     """
 
-    def __init__(self, session, enable_auto_advance=False):
+    def __init__(self, session, enable_auto_advance=False,
+                 teletype_delay=None):
         self.session = session
         self.auto_advancing = enable_auto_advance
+        self.teletype_delay = teletype_delay
 
     def send_keys(self, keys, literal=True, after=None):
         """Send each literal character in ``keys`` to the session.
@@ -87,8 +89,8 @@ class Session(object):
         """
         send_keys(self.session, keys, literal=literal)
 
-    def teletype(self, keys, delay=90):
         """Type ``keys`` character-by-character, as if you were actually typing
+    def teletype(self, keys, delay=None):
         them by hand.
 
         The ``delay`` parameter adds time between each keystroke for
@@ -99,6 +101,9 @@ class Session(object):
         :param keys: the literal keys to be typed
         :param int delay: the nominal time between keystrokes in milliseconds.
         """
+        if delay is None:
+            delay = self.teletype_delay if self.teletype is not None else 90
+
         delay_variation = delay / 10
 
         with self.auto_advance():
