@@ -9,10 +9,7 @@ from oraide import (send_keys, Session, ConnectionFailedError,
 TESTING_SESSION_NAME = 'oraide_test_session'
 
 
-class TestSendKeys(unittest.TestCase):
-    session_name = TESTING_SESSION_NAME
-    verification_string = '7hh50zxnxj'
-
+class LiveSessionMixin(object):
     def start_tmux_session(self):
         logging.info('Starting tmux session: {}'.format(self.session_name))
         subprocess.check_call(['tmux', 'new-session', '-d',
@@ -25,6 +22,17 @@ class TestSendKeys(unittest.TestCase):
         return subprocess.check_output(
             ['tmux', 'capture-pane', '-p',
              '-t{}'.format(self.session_name)])
+
+    def kill_tmux_server(self):
+        proc = subprocess.Popen(['tmux', 'kill-server'],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
+        proc.communicate()
+
+
+class TestSendKeys(LiveSessionMixin, unittest.TestCase):
+    session_name = TESTING_SESSION_NAME
+    verification_string = '7hh50zxnxj'
 
     def test_literal_keys_appear_in_session(self):
         self.start_tmux_session()
@@ -56,10 +64,7 @@ class TestSendKeys(unittest.TestCase):
             send_keys(self.session_name, self.verification_string)
 
     def tearDown(self):
-        proc = subprocess.Popen(['tmux', 'kill-server'],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT)
-        proc.communicate()
+        self.kill_tmux_server()
 
 
 class TestSession(unittest.TestCase):
