@@ -92,10 +92,16 @@ def prompt(fn, input_func=None):
         keys = args[1] if len(args) > 1 else None
 
         if not args[0].auto_advancing:
-            input_func("[{session}] Press enter to send {keys}".format(
-                keys=repr(keys),
-                session=repr(self.session))
-            )
+            if keys is not None:
+                msg = "[{session}] Press enter to send {keys}".format(
+                    keys=repr(keys),
+                    session=repr(self.session),
+                )
+            else:
+                msg = "[{session}] Press enter to continue".format(
+                    session=repr(self.session)
+                )
+            input_func(msg)
         return fn(*args, **kwargs)
     return wrapper
 
