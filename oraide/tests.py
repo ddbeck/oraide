@@ -109,3 +109,20 @@ class TestTeletypeDelay(LiveSessionMixin, unittest.TestCase):
 
     def tearDown(self):
         self.kill_tmux_server()
+
+
+class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
+    session_name = TESTING_SESSION_NAME
+
+    def setUp(self):
+        self.start_tmux_session()
+        self.session = Session(self.session_name, enable_auto_advance=True)
+
+    def test_enter_with_keys(self):
+        self.session.enter("echo 'testing enter() with keys string'")
+
+    def test_enter_without_keys(self):
+        self.session.enter()
+
+    def tearDown(self):
+        self.kill_tmux_server()
