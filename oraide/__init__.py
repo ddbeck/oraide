@@ -96,11 +96,11 @@ def prompt(fn, input_func=None):
             if keys is not None:
                 msg = "[{session}] Press enter to send {keys}".format(
                     keys=repr(keys),
-                    session=repr(self.session),
+                    session=self.session,
                 )
             else:
                 msg = "[{session}] Press enter to continue".format(
-                    session=repr(self.session)
+                    session=self.session
                 )
             input_func(msg)
         return fn(*args, **kwargs)
