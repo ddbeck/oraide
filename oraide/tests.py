@@ -3,7 +3,7 @@ import subprocess
 import time
 import unittest
 
-from oraide import (send_keys, Session, ConnectionFailedError,
+from oraide import (prompt, send_keys, Session, ConnectionFailedError,
                     SessionNotFoundError)
 
 TESTING_SESSION_NAME = 'oraide_test_session'
@@ -83,6 +83,25 @@ class TestSession(unittest.TestCase):
         with s2.auto_advance():
             self.assertTrue(s1.auto_advancing)
         self.assertFalse(s2.auto_advancing)
+
+
+class TestPrompt(unittest.TestCase):
+    def fake_input(*args, **kwargs):
+        pass
+
+    def test_prompt_with_keys(self):
+        def test_fn(*args, **kwargs):
+            pass
+        fn = prompt(test_fn, input_func=self.fake_input)
+
+        fn(Session('test'), 'hargle bargle')
+
+    def test_prompt_without_keys(self):
+        def test_fn(*args, **kwargs):
+            pass
+        fn = prompt(test_fn, input_func=self.fake_input)
+
+        fn(Session('test'))
 
 
 class TestTeletypeDelay(LiveSessionMixin, unittest.TestCase):
