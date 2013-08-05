@@ -43,7 +43,7 @@ class TestSendKeys(unittest.TestCase):
         session_output = self.get_tmux_session_contents()
         count = session_output.count(self.verification_string)
 
-        self.assertEquals(count, 2)
+        self.assertEqual(count, 2)
 
     def test_wrong_session_raises_session_not_found_error(self):
         self.start_tmux_session()
