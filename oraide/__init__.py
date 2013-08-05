@@ -1,10 +1,10 @@
 from contextlib import contextmanager
 from functools import wraps
+import locale
 import logging
 import random
 import subprocess
 import time
-
 from . import keys as keyboard
 
 
@@ -70,10 +70,11 @@ def send_keys(session, keys, literal=True):
     try:
         subprocess.check_output(args, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as exc:
-        if 'session not found' in exc.output:
+        output = exc.output.decode(locale.getdefaultlocale()[1])
+        if 'session not found' in output:
             raise SessionNotFoundError(exc.returncode, cmd, exc.output,
                                        session=session)
-        elif 'failed to connect to server' in exc.output:
+        elif 'failed to connect to server' in output:
             raise ConnectionFailedError(exc.returncode, cmd, exc.output)
         else:
             raise

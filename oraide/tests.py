@@ -1,3 +1,4 @@
+import locale
 import logging
 import subprocess
 import time
@@ -19,9 +20,10 @@ class LiveSessionMixin(object):
                          #       ready, instead of waiting and hoping
 
     def get_tmux_session_contents(self):
-        return subprocess.check_output(
+        out = subprocess.check_output(
             ['tmux', 'capture-pane', '-p',
              '-t{}'.format(self.session_name)])
+        return out.decode(locale.getdefaultlocale()[1])
 
     def kill_tmux_server(self):
         proc = subprocess.Popen(['tmux', 'kill-server'],
