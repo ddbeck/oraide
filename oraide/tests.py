@@ -83,3 +83,29 @@ class TestSession(unittest.TestCase):
         with s2.auto_advance():
             self.assertTrue(s1.auto_advancing)
         self.assertFalse(s2.auto_advancing)
+
+
+class TestTeletypeDelay(LiveSessionMixin, unittest.TestCase):
+    session_name = TESTING_SESSION_NAME
+
+    def setUp(self):
+        self.start_tmux_session()
+
+    def test_delay_set_by_argument(self):
+        s = Session(self.session_name, enable_auto_advance=True)
+        s.teletype("echo 'Hello, World!'", delay=10)
+        s.enter()
+
+    def test_delay_set_by_session_attribute(self):
+        s = Session(self.session_name, enable_auto_advance=True,
+                    teletype_delay=10)
+        s.teletype("echo 'Hello, World!'")
+        s.enter()
+
+    def test_delay_default(self):
+        s = Session(self.session_name, enable_auto_advance=True)
+        s.teletype("echo 'Hello, World!'")
+        s.enter()
+
+    def tearDown(self):
+        self.kill_tmux_server()

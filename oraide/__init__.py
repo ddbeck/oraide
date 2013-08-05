@@ -137,7 +137,7 @@ class Session(object):
         :param int delay: the nominal time between keystrokes in milliseconds.
         """
         if delay is None:
-            delay = self.teletype_delay if self.teletype is not None else 90
+            delay = self.teletype_delay if self.teletype_delay is not None else 90
 
         delay_variation = delay / 10
 
