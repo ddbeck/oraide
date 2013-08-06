@@ -1,4 +1,6 @@
-include LICENSE.txt README.rst
+include *.txt
+include *.rst
+include tox.ini
 recursive-include docs *
 recursive-include examples *
 prune docs/_build

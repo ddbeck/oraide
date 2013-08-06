@@ -1,10 +1,10 @@
 from contextlib import contextmanager
 from functools import wraps
+import locale
 import logging
 import random
 import subprocess
 import time
-
 from . import keys as keyboard
 
 
@@ -70,24 +70,39 @@ def send_keys(session, keys, literal=True):
     try:
         subprocess.check_output(args, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as exc:
-        if 'session not found' in exc.output:
+        output = exc.output.decode(locale.getdefaultlocale()[1])
+        if 'session not found' in output:
             raise SessionNotFoundError(exc.returncode, cmd, exc.output,
                                        session=session)
-        elif 'failed to connect to server' in exc.output:
+        elif 'failed to connect to server' in output:
             raise ConnectionFailedError(exc.returncode, cmd, exc.output)
         else:
             raise
 
 
-def prompt(fn):
+def prompt(fn, input_func=None):
+    if input_func is None:
+        try:
+            input_func = raw_input
+        except NameError:
+            input_func = input
+
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        self, keys = args
+        self = args[0]
+        keys = args[1] if len(args) > 1 else None
+
         if not args[0].auto_advancing:
-            raw_input("[{session}] Press enter to send {keys}".format(
-                keys=repr(keys),
-                session=repr(self.session))
-            )
+            if keys is not None:
+                msg = "[{session}] Press enter to send {keys}".format(
+                    keys=repr(keys),
+                    session=self.session,
+                )
+            else:
+                msg = "[{session}] Press enter to continue".format(
+                    session=self.session
+                )
+            input_func(msg)
         return fn(*args, **kwargs)
     return wrapper
 
@@ -137,7 +152,7 @@ class Session(object):
         :param int delay: the nominal time between keystrokes in milliseconds.
         """
         if delay is None:
-            delay = self.teletype_delay if self.teletype is not None else 90
+            delay = self.teletype_delay if self.teletype_delay is not None else 90
 
         delay_variation = delay / 10
 
@@ -163,10 +178,13 @@ class Session(object):
         :param keys: the keystroke to be sent to the to the session. These keys
             may only be literal keystrokes, not keynames to be looked up by
             tmux.
+        :param teletype: whether to enable simulated typing
         :param after: additional keystrokes to send to the session with
             ``literal`` set to ``False`` (typically for appending a special
             keys from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
         """
+        keys = keys if keys is not None else ''
+
         if teletype:
             with self.auto_advance():
                 self.teletype(keys)

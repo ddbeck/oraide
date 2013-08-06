@@ -1,5 +1,7 @@
 """A demonstration of the ``Session`` API."""
 
+from __future__ import print_function
+
 import oraide
 
 
@@ -28,7 +30,7 @@ def main():
     s.enter('i')
 
     with s.auto_advance():
-        print "Typing {} characters".format(len(EARNESTNESS))
+        print("Typing {} characters".format(len(EARNESTNESS)))
         for line in EARNESTNESS.splitlines():
             s.enter(line)
 
