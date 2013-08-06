@@ -96,7 +96,7 @@ class TestPrompt(unittest.TestCase):
             pass
         fn = prompt(test_fn, input_func=self.fake_input)
 
-        fn(Session('test'), 'hargle bargle')
+        fn(Session('test'), 'test prompt with keys')
 
     def test_prompt_without_keys(self):
         def test_fn(*args, **kwargs):
@@ -114,18 +114,18 @@ class TestTeletypeDelay(LiveSessionMixin, unittest.TestCase):
 
     def test_delay_set_by_argument(self):
         s = Session(self.session_name, enable_auto_advance=True)
-        s.teletype("echo 'Hello, World!'", delay=10)
+        s.teletype("echo 'this is the delay set on the method'", delay=10)
         s.enter()
 
     def test_delay_set_by_session_attribute(self):
         s = Session(self.session_name, enable_auto_advance=True,
                     teletype_delay=10)
-        s.teletype("echo 'Hello, World!'")
+        s.teletype("echo 'this is the delay set on the session at-large'")
         s.enter()
 
     def test_delay_default(self):
         s = Session(self.session_name, enable_auto_advance=True)
-        s.teletype("echo 'Hello, World!'")
+        s.teletype("echo 'this is the default delay'")
         s.enter()
 
     def tearDown(self):
