@@ -28,8 +28,11 @@ import sys, os
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest',
               'sphinx.ext.intersphinx', 'sphinx.ext.extlinks']
 
-if os.environ.get('READTHEDOCS', None) is None:
-    extensions.append('sphinxcontrib.spelling')
+if sys.version_info[0] == 2:  # Python 2!
+    if os.environ.get('READTHEDOCS', None) is None:
+        extensions.append('sphinxcontrib.spelling')
+else:
+    sys.stdout.write('note: spellcheck is Python 2 only\n')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
