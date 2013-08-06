@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='oraide',
-    version='0.2.0',
+    version='0.3.0',
     author='Daniel D. Beck',
     author_email='me@danieldbeck.com',
     description=('A library to help presenters demonstrate terminal sessions '
