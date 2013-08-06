@@ -178,6 +178,7 @@ class Session(object):
         :param keys: the keystroke to be sent to the to the session. These keys
             may only be literal keystrokes, not keynames to be looked up by
             tmux.
+        :param teletype: whether to enable simulated typing
         :param after: additional keystrokes to send to the session with
             ``literal`` set to ``False`` (typically for appending a special
             keys from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
