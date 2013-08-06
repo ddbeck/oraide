@@ -26,7 +26,7 @@ import sys, os
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest',
-              'sphinx.ext.intersphinx']
+              'sphinx.ext.intersphinx', 'sphinx.ext.extlinks']
 
 if os.environ.get('READTHEDOCS', None) is None:
     extensions.append('sphinxcontrib.spelling')
@@ -258,3 +258,8 @@ intersphinx_mapping = {'python': ('http://docs.python.org/3.2', None)}
 # -- Options for sphinxcontrib-spelling ----------------------------------------
 
 spelling_show_suggestions = False
+
+# -- Options for extlinks ------------------------------------------------------
+
+extlinks = {'issue': ('https://github.com/ddbeck/oraide/issues/%s',
+                      'Issue #')}
