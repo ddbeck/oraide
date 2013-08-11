@@ -7,17 +7,42 @@ import unittest
 from oraide import (prompt, send_keys, Session, ConnectionFailedError,
                     SessionNotFoundError)
 
+SHELL_PROMPT = '$'
 TESTING_SESSION_NAME = 'oraide_test_session'
 
 
+class TimeoutError(Exception):
+    pass
+
+
+def assert_after_timeout(fn, timeout_duration=2.0):
+    timeout = time.time() + timeout_duration
+    def wrapper():
+        while True:
+            try:
+                return fn()
+            except AssertionError:
+                if time.time() < timeout:
+                    raise
+    return wrapper
+
+
 class LiveSessionMixin(object):
-    def start_tmux_session(self):
+    def start_tmux_session(self, timeout_duration=2.0):
         logging.info('Starting tmux session: {}'.format(self.session_name))
+
         subprocess.check_call(['tmux', 'new-session', '-d',
                                '-s{}'.format(self.session_name)])
-        time.sleep(0.5)  # wait for the session to start
-                         # TODO: find a way to determine whether the session is
-                         #       ready, instead of waiting and hoping
+
+        subprocess.check_call(['tmux', 'has-session',
+                               '-t{}'.format(self.session_name)])
+
+        timeout = time.time() + timeout_duration
+        while time.time() < timeout:
+            if SHELL_PROMPT in self.get_tmux_session_contents():
+                return
+        else:
+            raise TimeoutError('tmux session failed to start before timeout')
 
     def get_tmux_session_contents(self):
         out = subprocess.check_output(
@@ -38,22 +63,27 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
 
     def test_literal_keys_appear_in_session(self):
         self.start_tmux_session()
-
         send_keys(self.session_name, self.verification_string)
-        session_output = self.get_tmux_session_contents()
 
-        self.assertIn(self.verification_string, session_output)
+        @assert_after_timeout
+        def _assertion():
+            self.assertIn(self.verification_string,
+                          self.get_tmux_session_contents())
+        _assertion()
 
-    def test_lookup_keys_appear_in_session(self):
+
+    def test_lookup_keys_are_sent_to_session(self):
         self.start_tmux_session()
-
         send_keys(self.session_name,
                   'echo "Hello, {}"'.format(self.verification_string))
         send_keys(self.session_name, 'Enter', literal=False)
-        session_output = self.get_tmux_session_contents()
-        count = session_output.count(self.verification_string)
 
-        self.assertEqual(count, 2)
+        @assert_after_timeout
+        def _assertion():
+            session_contents = self.get_tmux_session_contents()
+            self.assertEqual(2,
+                session_contents.count(self.verification_string))
+        _assertion()
 
     def test_wrong_session_raises_session_not_found_error(self):
         self.start_tmux_session()
