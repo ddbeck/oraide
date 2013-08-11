@@ -15,6 +15,18 @@ class TimeoutError(Exception):
     pass
 
 
+def assert_after_timeout(fn, timeout_duration=2.0):
+    timeout = time.time() + timeout_duration
+    def wrapper():
+        while True:
+            try:
+                return fn()
+            except AssertionError:
+                if time.time() < timeout:
+                    raise
+    return wrapper
+
+
 class LiveSessionMixin(object):
     def start_tmux_session(self, timeout_duration=2.0):
         logging.info('Starting tmux session: {}'.format(self.session_name))
@@ -51,11 +63,13 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
 
     def test_literal_keys_appear_in_session(self):
         self.start_tmux_session()
-
         send_keys(self.session_name, self.verification_string)
-        session_output = self.get_tmux_session_contents()
 
-        self.assertIn(self.verification_string, session_output)
+        @assert_after_timeout
+        def _assertion():
+            self.assertIn(self.verification_string,
+                          self.get_tmux_session_contents())
+        _assertion()
 
     def test_lookup_keys_appear_in_session(self):
         self.start_tmux_session()
@@ -63,10 +77,13 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
         send_keys(self.session_name,
                   'echo "Hello, {}"'.format(self.verification_string))
         send_keys(self.session_name, 'Enter', literal=False)
-        session_output = self.get_tmux_session_contents()
-        count = session_output.count(self.verification_string)
 
-        self.assertEqual(count, 2)
+        @assert_after_timeout
+        def _assertion():
+            session_contents = self.get_tmux_session_contents()
+            self.assertEqual(2,
+                session_contents.count(self.verification_string))
+        _assertion()
 
     def test_wrong_session_raises_session_not_found_error(self):
         self.start_tmux_session()
