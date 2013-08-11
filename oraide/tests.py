@@ -7,17 +7,30 @@ import unittest
 from oraide import (prompt, send_keys, Session, ConnectionFailedError,
                     SessionNotFoundError)
 
+SHELL_PROMPT = '$'
 TESTING_SESSION_NAME = 'oraide_test_session'
 
 
+class TimeoutError(Exception):
+    pass
+
+
 class LiveSessionMixin(object):
-    def start_tmux_session(self):
+    def start_tmux_session(self, timeout_duration=2.0):
         logging.info('Starting tmux session: {}'.format(self.session_name))
+
         subprocess.check_call(['tmux', 'new-session', '-d',
                                '-s{}'.format(self.session_name)])
-        time.sleep(0.5)  # wait for the session to start
-                         # TODO: find a way to determine whether the session is
-                         #       ready, instead of waiting and hoping
+
+        subprocess.check_call(['tmux', 'has-session',
+                               '-t{}'.format(self.session_name)])
+
+        timeout = time.time() + timeout_duration
+        while time.time() < timeout:
+            if SHELL_PROMPT in self.get_tmux_session_contents():
+                return
+        else:
+            raise TimeoutError('tmux session failed to start before timeout')
 
     def get_tmux_session_contents(self):
         out = subprocess.check_output(
