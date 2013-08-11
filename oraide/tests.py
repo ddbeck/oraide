@@ -71,9 +71,9 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
                           self.get_tmux_session_contents())
         _assertion()
 
-    def test_lookup_keys_appear_in_session(self):
-        self.start_tmux_session()
 
+    def test_lookup_keys_are_sent_to_session(self):
+        self.start_tmux_session()
         send_keys(self.session_name,
                   'echo "Hello, {}"'.format(self.verification_string))
         send_keys(self.session_name, 'Enter', literal=False)
