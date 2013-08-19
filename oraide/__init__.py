@@ -1,3 +1,5 @@
+"""'A library to help presenters demonstrate terminal sessions hands-free."""
+
 from contextlib import contextmanager
 from functools import wraps
 import locale
@@ -81,6 +83,7 @@ def send_keys(session, keys, literal=True):
 
 
 def prompt(func, input_func=None):
+    """Handle prompting for advancement on `Session` methods."""
     if input_func is None:
         try:
             input_func = raw_input
