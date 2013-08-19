@@ -40,7 +40,7 @@ class SessionNotFoundError(TmuxError):
     """
     def __init__(self, *args, **kwargs):
         self.session = kwargs.pop('session', None)
-        return super(SessionNotFoundError, self).__init__(*args, **kwargs)
+        super(SessionNotFoundError, self).__init__(*args, **kwargs)
 
     def __str__(self):
         return 'tmux session {} not found.'.format(repr(self.session))
