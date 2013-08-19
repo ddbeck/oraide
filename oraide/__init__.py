@@ -80,14 +80,14 @@ def send_keys(session, keys, literal=True):
             raise
 
 
-def prompt(fn, input_func=None):
+def prompt(func, input_func=None):
     if input_func is None:
         try:
             input_func = raw_input
         except NameError:
             input_func = input
 
-    @wraps(fn)
+    @wraps(func)
     def wrapper(*args, **kwargs):
         self = args[0]
         keys = args[1] if len(args) > 1 else None
@@ -103,7 +103,7 @@ def prompt(fn, input_func=None):
                     session=self.session
                 )
             input_func(msg)
-        return fn(*args, **kwargs)
+        return func(*args, **kwargs)
     return wrapper
 
 
@@ -216,4 +216,4 @@ class Session(object):
         self.auto_advancing = initial_auto_state
 
 
-__all__ = [send_keys, Session]
+__all__ = ['send_keys', 'Session']
