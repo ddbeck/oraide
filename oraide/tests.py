@@ -41,7 +41,7 @@ class LiveSessionMixin(object):
         timeout = time.time() + timeout_duration
         while time.time() < timeout:
             if SHELL_PROMPT in self.get_tmux_session_contents():
-                return
+                break
         else:
             raise TimeoutError('tmux session failed to start before timeout')
 
