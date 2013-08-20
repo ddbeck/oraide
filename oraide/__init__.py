@@ -1,5 +1,7 @@
 """'A library to help presenters demonstrate terminal sessions hands-free."""
 
+__version__ = 'dev'
+
 from contextlib import contextmanager
 from functools import wraps
 import locale
@@ -8,7 +10,6 @@ import random
 import subprocess
 import time
 from . import keys as keyboard
-
 
 logger = logging.getLogger(__name__)
 
