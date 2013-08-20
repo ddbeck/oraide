@@ -8,6 +8,12 @@ The library's name is a portmanteau of *orate* and *aide*.
 
 .. _Daniel D. Beck: http://www.danieldbeck.com/
 
+Release dev
+-----------
+
+- Improved the process for adding and updating version numbers.
+
+
 Release 0.3
 -----------
 
