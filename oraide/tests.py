@@ -17,6 +17,7 @@ class TimeoutError(Exception):
 
 def assert_after_timeout(fn, timeout_duration=2.0):
     timeout = time.time() + timeout_duration
+
     def wrapper():
         while True:
             try:
@@ -40,7 +41,7 @@ class LiveSessionMixin(object):
         timeout = time.time() + timeout_duration
         while time.time() < timeout:
             if SHELL_PROMPT in self.get_tmux_session_contents():
-                return
+                break
         else:
             raise TimeoutError('tmux session failed to start before timeout')
 
@@ -71,7 +72,6 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
                           self.get_tmux_session_contents())
         _assertion()
 
-
     def test_lookup_keys_are_sent_to_session(self):
         self.start_tmux_session()
         send_keys(self.session_name,
@@ -82,7 +82,7 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
         def _assertion():
             session_contents = self.get_tmux_session_contents()
             self.assertEqual(2,
-                session_contents.count(self.verification_string))
+                             session_contents.count(self.verification_string))
         _assertion()
 
     def test_wrong_session_raises_session_not_found_error(self):

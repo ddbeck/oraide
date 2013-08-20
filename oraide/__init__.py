@@ -1,3 +1,5 @@
+"""'A library to help presenters demonstrate terminal sessions hands-free."""
+
 from contextlib import contextmanager
 from functools import wraps
 import locale
@@ -38,7 +40,7 @@ class SessionNotFoundError(TmuxError):
     """
     def __init__(self, *args, **kwargs):
         self.session = kwargs.pop('session', None)
-        return super(SessionNotFoundError, self).__init__(*args, **kwargs)
+        super(SessionNotFoundError, self).__init__(*args, **kwargs)
 
     def __str__(self):
         return 'tmux session {} not found.'.format(repr(self.session))
@@ -80,14 +82,15 @@ def send_keys(session, keys, literal=True):
             raise
 
 
-def prompt(fn, input_func=None):
+def prompt(func, input_func=None):
+    """Handle prompting for advancement on `Session` methods."""
     if input_func is None:
         try:
             input_func = raw_input
         except NameError:
             input_func = input
 
-    @wraps(fn)
+    @wraps(func)
     def wrapper(*args, **kwargs):
         self = args[0]
         keys = args[1] if len(args) > 1 else None
@@ -103,7 +106,7 @@ def prompt(fn, input_func=None):
                     session=self.session
                 )
             input_func(msg)
-        return fn(*args, **kwargs)
+        return func(*args, **kwargs)
     return wrapper
 
 
@@ -152,7 +155,8 @@ class Session(object):
         :param int delay: the nominal time between keystrokes in milliseconds.
         """
         if delay is None:
-            delay = self.teletype_delay if self.teletype_delay is not None else 90
+            delay = (self.teletype_delay if self.teletype_delay is not None
+                     else 90)
 
         delay_variation = delay / 10
 
@@ -215,4 +219,4 @@ class Session(object):
         self.auto_advancing = initial_auto_state
 
 
-__all__ = [send_keys, Session]
+__all__ = ['send_keys', 'Session']
