@@ -14,6 +14,7 @@ Release dev
 - Improved the process for adding and updating version numbers.
 - Fixed various style and kwalitee problems.
 - Changed the layout of the Git repository to use `git-flow`_.
+- Added optional ``ORAIDE_TEST_PROMPT`` environment variable setting for test suite's prompt detection.
 - Added polling and timeouts to improve the precision of tmux sessions in the test suite.
 
 .. _git-flow: https://github.com/nvie/gitflow
