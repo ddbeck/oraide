@@ -1,5 +1,6 @@
 import locale
 import logging
+import os
 import subprocess
 import time
 import unittest
@@ -7,7 +8,10 @@ import unittest
 from oraide import (prompt, send_keys, Session, ConnectionFailedError,
                     SessionNotFoundError)
 
-SHELL_PROMPT = '$'
+SHELL_PROMPT = os.environ.get('ORAIDE_TEST_PROMPT', u'$')
+SHELL_PROMPT = (SHELL_PROMPT.decode(locale.getdefaultlocale()[1])
+                if hasattr(SHELL_PROMPT, 'decode')
+                else SHELL_PROMPT)
 TESTING_SESSION_NAME = 'oraide_test_session'
 
 
