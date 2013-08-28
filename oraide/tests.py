@@ -58,12 +58,6 @@ class LiveSessionMixin(object):
              '-t{}'.format(self.session_name)])
         return out.decode(locale.getdefaultlocale()[1])
 
-    def kill_tmux_server(self):
-        proc = subprocess.Popen(['tmux', 'kill-server'],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT)
-        proc.communicate()
-
     def kill_tmux_session(self):
         proc = subprocess.Popen(['tmux', 'kill-session',
                                  '-t{}'.format(self.session_name)],
