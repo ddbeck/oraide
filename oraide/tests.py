@@ -58,10 +58,11 @@ class LiveSessionMixin(object):
              '-t{}'.format(self.session_name)])
         return out.decode(locale.getdefaultlocale()[1])
 
-    def kill_tmux_server(self):
-        proc = subprocess.Popen(['tmux', 'kill-server'],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT)
+    def kill_tmux_session(self):
+        proc = subprocess.Popen(['tmux', 'kill-session',
+                                 '-t{}'.format(self.session_name)],
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT)
         proc.communicate()
 
 
@@ -103,7 +104,7 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
             send_keys(self.session_name, self.verification_string)
 
     def tearDown(self):
-        self.kill_tmux_server()
+        self.kill_tmux_session()
 
 
 class TestSession(unittest.TestCase):
@@ -166,7 +167,7 @@ class TestTeletypeDelay(LiveSessionMixin, unittest.TestCase):
         s.enter()
 
     def tearDown(self):
-        self.kill_tmux_server()
+        self.kill_tmux_session()
 
 
 class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
@@ -183,4 +184,4 @@ class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
         self.session.enter()
 
     def tearDown(self):
-        self.kill_tmux_server()
+        self.kill_tmux_session()
