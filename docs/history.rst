@@ -16,6 +16,7 @@ Release dev
 - Changed the layout of the Git repository to use `git-flow`_.
 - Added optional ``ORAIDE_TEST_PROMPT`` environment variable setting for test suite's prompt detection.
 - Added polling and timeouts to improve the precision of tmux sessions in the test suite.
+- Removed the part of the test suite that kills the tmux server. Now it only kills the test session.
 
 .. _git-flow: https://github.com/nvie/gitflow
 
