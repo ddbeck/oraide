@@ -9,7 +9,9 @@ Oraide is free software, provided under a BSD-style license.
 .. _the Oraide documentation: https://oraide.readthedocs.org/en/latest/
 .. _Oraide on GitHub: https://github.com/ddbeck/oraide
 
-Contents:
+.. only:: html
+
+   Contents:
 
 .. toctree::
    :maxdepth: 2
