@@ -162,9 +162,12 @@ The ``teletype`` method works like ``send_keys`` with two differences:
    so you can control the pacing of your presentation.
 
 #. The keys are sent one at a time, with a short delay between each, to simulate typing.
-   It looks something like this (slowed for dramatic effect):
 
-   .. image:: no-hands.gif
+   .. only:: html
+
+      It looks something like this (slowed for dramatic effect):
+
+      .. image:: no-hands.gif
 
 The ``enter`` method does the same as ``teletype``, except the :kbd:`Enter` key is sent after the literal keys.
 

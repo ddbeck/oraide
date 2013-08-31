@@ -12,6 +12,7 @@ Release dev
 -----------
 
 - Improved the process for adding and updating version numbers.
+- Fixed a PDF documentation build failure caused by the tutorial's animated GIF.
 - Fixed various style and kwalitee problems.
 - Changed the layout of the Git repository to use `git-flow`_.
 - Added optional ``ORAIDE_TEST_PROMPT`` environment variable setting for test suite's prompt detection.
