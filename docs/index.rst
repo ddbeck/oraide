@@ -5,6 +5,7 @@ Oraide is a Python library to help presenters with live coding, demonstrations, 
 Oraide uses tmux_ to create the illusion that someone is manually typing in a terminal session.
 Oraide is free software, provided under a BSD-style license.
 
+
 .. _tmux: http://tmux.sourceforge.net/
 .. _the Oraide documentation: https://oraide.readthedocs.org/en/latest/
 .. _Oraide on GitHub: https://github.com/ddbeck/oraide
@@ -16,6 +17,7 @@ Oraide is free software, provided under a BSD-style license.
 .. toctree::
    :maxdepth: 2
 
+   whentouse
    tutorial
    api
    history
