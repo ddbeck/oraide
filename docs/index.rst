@@ -21,5 +21,6 @@ Oraide is free software, provided under a BSD-style license.
    tutorial
    api
    history
+   priorart
 
 If you'd like to review the source, contribute changes, or file a bug report, please see `Oraide on GitHub`_.
