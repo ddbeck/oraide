@@ -1,3 +1,5 @@
+.. _seealso:
+
 See also
 --------
 
