@@ -11,6 +11,7 @@ The library's name is a portmanteau of *orate* and *aide*.
 Release dev
 -----------
 
+- Added a :ref:`whentouse` document.
 - Improved the process for adding and updating version numbers.
 - Fixed a PDF documentation build failure caused by the tutorial's animated GIF.
 - Fixed various style and kwalitee problems.

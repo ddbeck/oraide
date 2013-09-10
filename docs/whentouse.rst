@@ -1,3 +1,5 @@
+.. _whentouse:
+
 When to use Oraide
 ##################
 
