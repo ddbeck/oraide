@@ -204,16 +204,16 @@ class Session(object):
             ``literal`` set to ``False`` (typically for appending a special
             keys from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
         """
-        keys = keys if keys is not None else ''
 
-        if teletype:
+        if keys:
+            if teletype:
+                with self.auto_advance():
+                    self.teletype(keys)
+            else:
+                self.send_keys(keys)
+
+        if after:
             with self.auto_advance():
-                self.teletype(keys)
-        else:
-            self.send_keys(keys)
-
-        with self.auto_advance():
-            if after:
                 self.send_keys(after, literal=False)
 
     @contextmanager

@@ -177,11 +177,58 @@ class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
         self.start_tmux_session()
         self.session = Session(self.session_name, enable_auto_advance=True)
 
-    def test_enter_with_keys(self):
-        self.session.enter("echo 'testing enter() with keys string'")
+    def test_noop(self):
+        """Test some cases of calling Enter that don't actually do anything."""
+        contents = self.get_tmux_session_contents()
 
-    def test_enter_without_keys(self):
+        self.session.enter(after=None)
+        self.session.enter(teletype=False, after=None)
+
+        self.assertEqual(contents, self.get_tmux_session_contents())
+
+    def test_enter_without_text(self):
+        count = self.get_tmux_session_contents().count(SHELL_PROMPT)
+
         self.session.enter()
+        self.session.enter(teletype=False)
+
+        @assert_after_timeout
+        def _assertion():
+            contents = self.get_tmux_session_contents()
+            self.assertEqual(count + 1, contents.count(SHELL_PROMPT))
+        _assertion()
+
+    def test_keys_with_enter(self):
+        self.session.enter("echo 'test_keys_with_enter'")
+
+        output = self.get_tmux_session_contents()
+
+        self.assertEqual(output.count('test_keys_with_enter'), 2)
+
+    def test_keys_without_enter(self):
+        self.session.enter("echo 'test_keys_without_enter'", after=None)
+
+        output = self.get_tmux_session_contents()
+
+        self.assertEqual(output.count('test_keys_without_enter'), 1)
+        self.session.enter()
+
+    def test_keys_without_teletype_without_after(self):
+        self.session.enter("echo 'test_keys_without_teletype_without_after'",
+                           teletype=False, after=None)
+
+        self.assertIn(
+            'test_keys_without_teletype_without_after',
+            self.get_tmux_session_contents()
+        )
+
+    def test_keys_without_teletype_with_enter(self):
+        self.session.enter("echo 'test_keys_without_teletype_with_enter'")
+
+        output = self.get_tmux_session_contents()
+
+        self.assertEqual(output.count('test_keys_without_teletype_with_enter'),
+                         2)
 
     def tearDown(self):
         self.kill_tmux_session()
