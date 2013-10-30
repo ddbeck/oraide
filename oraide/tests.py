@@ -5,7 +5,7 @@ import subprocess
 import time
 import unittest
 
-from oraide import (prompt, send_keys, Session, ConnectionFailedError,
+from oraide import (ConnectionFailedError, prompt, send_keys, Session,
                     SessionNotFoundError)
 
 SHELL_PROMPT = os.environ.get('ORAIDE_TEST_PROMPT', u'$')

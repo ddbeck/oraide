@@ -2,14 +2,15 @@
 
 __version__ = 'dev'
 
-from contextlib import contextmanager
-from functools import wraps
 import locale
 import logging
 import random
 import subprocess
 import time
 import warnings
+from contextlib import contextmanager
+from functools import wraps
+
 from . import keys as keyboard
 
 logger = logging.getLogger(__name__)
