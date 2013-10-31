@@ -271,3 +271,7 @@ spelling_show_suggestions = False
 
 extlinks = {'issue': ('https://github.com/ddbeck/oraide/issues/%s',
                       'Issue #')}
+
+# -- Options for Read the Docs -------------------------------------------------
+
+RTD_NEW_THEME = True
