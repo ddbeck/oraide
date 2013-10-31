@@ -10,7 +10,7 @@ for the first time.
 Prerequisites
 -------------
 
-Oraide requires tmux.
+Oraide requires tmux 1.7 or later.
 Your system may already have tmux installed, or you may need to use your system's package manager to install it.
 For example, to install tmux with APT, run ``apt-get install tmux``.
 On Mac OS X, you can install tmux with Homebrew_.

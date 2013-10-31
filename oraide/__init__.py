@@ -2,16 +2,32 @@
 
 __version__ = 'dev'
 
-from contextlib import contextmanager
-from functools import wraps
 import locale
 import logging
 import random
 import subprocess
 import time
+import warnings
+from contextlib import contextmanager
+from functools import wraps
+
 from . import keys as keyboard
 
 logger = logging.getLogger(__name__)
+
+# check for minimum tmux version
+VALID_VERSIONS = ['1.7', '1.8', '1.9']
+WRONG_VERSION_MESSAGE = ('tmux {ver} or greater not found. '
+                         'Oraide requires tmux>={ver}'
+                         ).format(ver=VALID_VERSIONS[0])
+try:
+    output = subprocess.check_output(['tmux', '-V'], stderr=subprocess.STDOUT)
+    output = output.decode(locale.getdefaultlocale()[1])
+    version_checks = (ver in output for ver in VALID_VERSIONS)
+    if not any(version_checks):
+        warnings.warn(WRONG_VERSION_MESSAGE, Warning)
+except Exception as exc:
+    warnings.warn(WRONG_VERSION_MESSAGE, Warning)
 
 
 class TmuxError(subprocess.CalledProcessError):
