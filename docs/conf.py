@@ -18,21 +18,22 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
-# -- General configuration -----------------------------------------------------
+# -- General configuration ----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
 
-# Add any Sphinx extension module names here, as strings. They can be extensions
-# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest',
               'sphinx.ext.intersphinx', 'sphinx.ext.extlinks']
 
-if sys.version_info[0] == 2:  # Python 2!
-    if os.environ.get('READTHEDOCS', None) is None:
-        extensions.append('sphinxcontrib.spelling')
-else:
-    sys.stdout.write('note: spellcheck is Python 2 only\n')
+try:
+    from sphinxcontrib import spelling
+    extensions.append('sphinxcontrib.spelling')
+    del spelling
+except ImportError:
+    sys.stdout.write('spellcheck not found, continuing without it\n')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

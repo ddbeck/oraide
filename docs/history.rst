@@ -14,6 +14,7 @@ Release dev
 - :issue:`8`: Added an explicit requirement of tmux 1.7 or greater.
   On import, a warning is raised when it cannot be confirmed that a supported version of tmux is available.
   Thanks to David Greisen for the feedback about this issue.
+- Upgraded to Sphinx 1.2.
 - Added a :ref:`seealso` document.
 - Added a :ref:`whentouse` document.
 - Improved the process for adding and updating version numbers.
