@@ -61,8 +61,8 @@ class LiveSessionMixin(object):
     def kill_tmux_session(self):
         proc = subprocess.Popen(['tmux', 'kill-session',
                                  '-t{}'.format(self.session_name)],
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT)
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
         proc.communicate()
 
 
