@@ -27,7 +27,7 @@ def assert_after_timeout(fn, timeout_duration=2.0):
             try:
                 return fn()
             except AssertionError:
-                if time.time() < timeout:
+                if time.time() > timeout:
                     raise
     return wrapper
 
