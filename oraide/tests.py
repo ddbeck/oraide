@@ -27,7 +27,7 @@ def assert_after_timeout(fn, timeout_duration=2.0):
             try:
                 return fn()
             except AssertionError:
-                if time.time() < timeout:
+                if time.time() > timeout:
                     raise
     return wrapper
 
@@ -61,8 +61,8 @@ class LiveSessionMixin(object):
     def kill_tmux_session(self):
         proc = subprocess.Popen(['tmux', 'kill-session',
                                  '-t{}'.format(self.session_name)],
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT)
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
         proc.communicate()
 
 
@@ -153,18 +153,18 @@ class TestTeletypeDelay(LiveSessionMixin, unittest.TestCase):
     def test_delay_set_by_argument(self):
         s = Session(self.session_name, enable_auto_advance=True)
         s.teletype("echo 'this is the delay set on the method'", delay=10)
-        s.enter()
+        s.send_keys('Enter', literal=False)
 
     def test_delay_set_by_session_attribute(self):
         s = Session(self.session_name, enable_auto_advance=True,
                     teletype_delay=10)
         s.teletype("echo 'this is the delay set on the session at-large'")
-        s.enter()
+        s.send_keys('Enter', literal=False)
 
     def test_delay_default(self):
         s = Session(self.session_name, enable_auto_advance=True)
         s.teletype("echo 'this is the default delay'")
-        s.enter()
+        s.send_keys('Enter', literal=False)
 
     def tearDown(self):
         self.kill_tmux_session()
@@ -177,11 +177,58 @@ class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
         self.start_tmux_session()
         self.session = Session(self.session_name, enable_auto_advance=True)
 
-    def test_enter_with_keys(self):
-        self.session.enter("echo 'testing enter() with keys string'")
+    def test_noop(self):
+        """Test some cases of calling Enter that don't actually do anything."""
+        contents = self.get_tmux_session_contents()
 
-    def test_enter_without_keys(self):
+        self.session.enter(after=None)
+        self.session.enter(teletype=False, after=None)
+
+        self.assertEqual(contents, self.get_tmux_session_contents())
+
+    def test_enter_without_text(self):
+        count = self.get_tmux_session_contents().count(SHELL_PROMPT)
+
         self.session.enter()
+        self.session.enter(teletype=False)
+
+        @assert_after_timeout
+        def _assertion():
+            contents = self.get_tmux_session_contents()
+            self.assertEqual(count + 1, contents.count(SHELL_PROMPT))
+        _assertion()
+
+    def test_keys_with_enter(self):
+        self.session.enter("echo 'test_keys_with_enter'")
+
+        output = self.get_tmux_session_contents()
+
+        self.assertEqual(output.count('test_keys_with_enter'), 2)
+
+    def test_keys_without_enter(self):
+        self.session.enter("echo 'test_keys_without_enter'", after=None)
+
+        output = self.get_tmux_session_contents()
+
+        self.assertEqual(output.count('test_keys_without_enter'), 1)
+        self.session.enter()
+
+    def test_keys_without_teletype_without_after(self):
+        self.session.enter("echo 'test_keys_without_teletype_without_after'",
+                           teletype=False, after=None)
+
+        self.assertIn(
+            'test_keys_without_teletype_without_after',
+            self.get_tmux_session_contents()
+        )
+
+    def test_keys_without_teletype_with_enter(self):
+        self.session.enter("echo 'test_keys_without_teletype_with_enter'")
+
+        output = self.get_tmux_session_contents()
+
+        self.assertEqual(output.count('test_keys_without_teletype_with_enter'),
+                         2)
 
     def tearDown(self):
         self.kill_tmux_session()
