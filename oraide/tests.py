@@ -153,18 +153,18 @@ class TestTeletypeDelay(LiveSessionMixin, unittest.TestCase):
     def test_delay_set_by_argument(self):
         s = Session(self.session_name, enable_auto_advance=True)
         s.teletype("echo 'this is the delay set on the method'", delay=10)
-        s.enter()
+        s.send_keys('Enter', literal=False)
 
     def test_delay_set_by_session_attribute(self):
         s = Session(self.session_name, enable_auto_advance=True,
                     teletype_delay=10)
         s.teletype("echo 'this is the delay set on the session at-large'")
-        s.enter()
+        s.send_keys('Enter', literal=False)
 
     def test_delay_default(self):
         s = Session(self.session_name, enable_auto_advance=True)
         s.teletype("echo 'this is the default delay'")
-        s.enter()
+        s.send_keys('Enter', literal=False)
 
     def tearDown(self):
         self.kill_tmux_session()
