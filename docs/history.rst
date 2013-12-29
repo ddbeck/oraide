@@ -21,6 +21,7 @@ Release dev
 - Fixed a PDF documentation build failure caused by the tutorial's animated GIF.
 - Fixed various style and kwalitee problems.
 - Changed the layout of the Git repository to use `git-flow`_.
+- Added a bunch more tests.
 - Added optional ``ORAIDE_TEST_PROMPT`` environment variable setting for test suite's prompt detection.
 - Added polling and timeouts to improve the precision of tmux sessions in the test suite.
 - Removed the part of the test suite that kills the tmux server. Now it only kills the test session.
