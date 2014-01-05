@@ -196,6 +196,7 @@ class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
         @assert_after_timeout
         def _assertion():
             contents = self.get_tmux_session_contents()
+            logging.debug("%s", contents)
             self.assertEqual(count + 1, contents.count(SHELL_PROMPT))
         _assertion()
 
