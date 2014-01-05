@@ -199,7 +199,7 @@ class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
         def _assertion():
             contents = self.get_tmux_session_contents()
             logging.debug("After: %s", repr(contents))
-            self.assertEqual(original_count + 1, contents.count(SHELL_PROMPT))
+            self.assertEqual(original_count + 2, contents.count(SHELL_PROMPT))
         _assertion()
 
     def test_keys_with_enter(self):
