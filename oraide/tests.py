@@ -57,7 +57,7 @@ class LiveSessionMixin(object):
             ['tmux', 'capture-pane', '-p',
              '-t{}'.format(self.session_name)])
         out_decoded = out.decode(locale.getdefaultlocale()[1])
-        return out_decoded.replace('\n', '')
+        return out_decoded
 
     def kill_tmux_session(self):
         proc = subprocess.Popen(['tmux', 'kill-session',
@@ -73,7 +73,7 @@ class TestSendKeys(LiveSessionMixin, unittest.TestCase):
 
     def test_literal_keys_appear_in_session(self):
         self.start_tmux_session()
-        send_keys(self.session_name, self.verification_string)
+        send_keys(self.session_name, '\n' + self.verification_string)
 
         @assert_after_timeout
         def _assertion():
