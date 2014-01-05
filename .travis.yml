@@ -6,7 +6,8 @@ before_install:
     - "sudo add-apt-repository ppa:pi-rho/dev -y"
     - "sudo apt-get update -qq"
     - "sudo apt-get install -qq tmux"
-    - "mkdir -p docs/_build"
+    - "tmux -V"
+    - "mkdir -p docs/_build && mkdir -p docs/_static"
 install:
     - "pip install -e ."
     - "pip install -r ./requirements.txt --use-mirrors"

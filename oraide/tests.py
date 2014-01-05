@@ -56,7 +56,8 @@ class LiveSessionMixin(object):
         out = subprocess.check_output(
             ['tmux', 'capture-pane', '-p',
              '-t{}'.format(self.session_name)])
-        return out.decode(locale.getdefaultlocale()[1])
+        out_decoded = out.decode(locale.getdefaultlocale()[1])
+        return out_decoded.strip('\n')
 
     def kill_tmux_session(self):
         proc = subprocess.Popen(['tmux', 'kill-session',
