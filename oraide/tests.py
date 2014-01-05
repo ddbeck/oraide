@@ -190,6 +190,7 @@ class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
     def test_enter_without_text(self):
         original_contents = self.get_tmux_session_contents()
         original_count = original_contents.count(SHELL_PROMPT)
+        logging.debug("Before: %s", repr(original_contents))
 
         self.session.enter()
         self.session.enter(teletype=False)
@@ -197,7 +198,7 @@ class TestSessionEnter(LiveSessionMixin, unittest.TestCase):
         @assert_after_timeout
         def _assertion():
             contents = self.get_tmux_session_contents()
-            logging.debug("%s", repr(contents))
+            logging.debug("After: %s", repr(contents))
             self.assertEqual(original_count + 1, contents.count(SHELL_PROMPT))
         _assertion()
 
