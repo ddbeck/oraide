@@ -8,6 +8,7 @@ before_install:
     - "sudo apt-get install -qq tmux"
     - "tmux -V"
     - "mkdir -p docs/_build && mkdir -p docs/_static"
+    - "echo 'export PS1=$' >> $HOME/.bashrc"
 install:
     - "pip install -e ."
     - "pip install -r ./requirements.txt --use-mirrors"
