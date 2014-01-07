@@ -21,3 +21,6 @@ license. See the ``LICENSE.txt`` file included for details.
 .. _the Oraide documentation: https://oraide.readthedocs.org/en/latest/
 .. _Oraide on GitHub: https://github.com/ddbeck/oraide
 .. _Daniel D. Beck: http://www.danieldbeck.com/
+
+.. image:: https://travis-ci.org/ddbeck/oraide.png?branch=develop
+   :target: https://travis-ci.org/ddbeck/oraide
