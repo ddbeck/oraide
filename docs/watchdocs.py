@@ -14,7 +14,7 @@ class TouchFileEventHandler(PatternMatchingEventHandler):
         super(TouchFileEventHandler, self).__init__(*args, **kwargs)
 
     def on_any_event(self, event):
-        with file(self.touch_file, 'a') as fp:
+        with open(self.touch_file, 'a') as fp:
             os.utime(fp.name, None)
 
 

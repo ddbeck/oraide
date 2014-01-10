@@ -1,8 +1,11 @@
 deduplication
+dev
 falsy
+Greisen
 Homebrew
 keyname
 keynames
+kwalitee
 lookup
 Oraide
 Pythonic
