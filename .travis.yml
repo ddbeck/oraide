@@ -1,13 +1,13 @@
 language: python
-python:
-    - "2.7"
-    - "pypy"
-    - "3.3"
+
+python: 2.7
+
 env:
     - TOXENV=py27
     - TOXENV=pypy
     - TOXENV=py33
     - TOXENV=docs
+
 before_install:
     # install tmux
     - sudo add-apt-repository ppa:pi-rho/dev -y
@@ -21,7 +21,9 @@ before_install:
 
     # hide stuff from bash prompt to make testing work
     - echo 'export PS1=$' >> $HOME/.bashrc
+
 install:
     - pip install --use-mirrors tox
+
 script:
     - tox
