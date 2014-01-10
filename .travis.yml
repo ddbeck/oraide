@@ -15,6 +15,9 @@ before_install:
     - sudo apt-get install -qq tmux
     - tmux -V
 
+    # install enchant
+    - sudo apt-get install libenchant-dev
+
     # set up docs directories
     - mkdir -p docs/_build
     - mkdir -p docs/_static
