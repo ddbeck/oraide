@@ -247,7 +247,9 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'Oraide', u'Oraide Documentation',
-     u'Daniel D. Beck', 'Oraide', 'One line description of project.',
+     u'Daniel D. Beck', 'Oraide',
+     ('A tool to spare presenters the risky proposition of entering terminal '
+      'commands and giving a presentation at the same time.'),
      'Miscellaneous'),
 ]
 
