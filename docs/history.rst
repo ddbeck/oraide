@@ -8,7 +8,7 @@ The library's name is a portmanteau of *orate* and *aide*.
 
 .. _Daniel D. Beck: http://www.danieldbeck.com/
 
-Release dev
+Release 0.4
 -----------
 
 - :issue:`8`: Added an explicit requirement of tmux 1.7 or greater.
