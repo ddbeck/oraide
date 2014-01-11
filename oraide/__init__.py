@@ -1,14 +1,33 @@
-from contextlib import contextmanager
-from functools import wraps
+"""'A library to help presenters demonstrate terminal sessions hands-free."""
+
+__version__ = '0.4'
+
 import locale
 import logging
 import random
 import subprocess
 import time
+import warnings
+from contextlib import contextmanager
+from functools import wraps
+
 from . import keys as keyboard
 
-
 logger = logging.getLogger(__name__)
+
+# check for minimum tmux version
+VALID_VERSIONS = ['1.7', '1.8', '1.9']
+WRONG_VERSION_MESSAGE = ('tmux {ver} or greater not found. '
+                         'Oraide requires tmux>={ver}'
+                         ).format(ver=VALID_VERSIONS[0])
+try:
+    output = subprocess.check_output(['tmux', '-V'], stderr=subprocess.STDOUT)
+    output = output.decode(locale.getdefaultlocale()[1])
+    version_checks = (ver in output for ver in VALID_VERSIONS)
+    if not any(version_checks):
+        warnings.warn(WRONG_VERSION_MESSAGE, Warning)
+except Exception as exc:
+    warnings.warn(WRONG_VERSION_MESSAGE, Warning)
 
 
 class TmuxError(subprocess.CalledProcessError):
@@ -38,7 +57,7 @@ class SessionNotFoundError(TmuxError):
     """
     def __init__(self, *args, **kwargs):
         self.session = kwargs.pop('session', None)
-        return super(SessionNotFoundError, self).__init__(*args, **kwargs)
+        super(SessionNotFoundError, self).__init__(*args, **kwargs)
 
     def __str__(self):
         return 'tmux session {} not found.'.format(repr(self.session))
@@ -80,14 +99,15 @@ def send_keys(session, keys, literal=True):
             raise
 
 
-def prompt(fn, input_func=None):
+def prompt(func, input_func=None):
+    """Handle prompting for advancement on `Session` methods."""
     if input_func is None:
         try:
             input_func = raw_input
         except NameError:
             input_func = input
 
-    @wraps(fn)
+    @wraps(func)
     def wrapper(*args, **kwargs):
         self = args[0]
         keys = args[1] if len(args) > 1 else None
@@ -103,7 +123,7 @@ def prompt(fn, input_func=None):
                     session=self.session
                 )
             input_func(msg)
-        return fn(*args, **kwargs)
+        return func(*args, **kwargs)
     return wrapper
 
 
@@ -152,7 +172,8 @@ class Session(object):
         :param int delay: the nominal time between keystrokes in milliseconds.
         """
         if delay is None:
-            delay = self.teletype_delay if self.teletype_delay is not None else 90
+            delay = (self.teletype_delay if self.teletype_delay is not None
+                     else 90)
 
         delay_variation = delay / 10
 
@@ -183,16 +204,16 @@ class Session(object):
             ``literal`` set to ``False`` (typically for appending a special
             keys from :mod:`oraide.keys`, like the default, :kbd:`Enter`)
         """
-        keys = keys if keys is not None else ''
 
-        if teletype:
+        if keys:
+            if teletype:
+                with self.auto_advance():
+                    self.teletype(keys)
+            else:
+                self.send_keys(keys)
+
+        if after:
             with self.auto_advance():
-                self.teletype(keys)
-        else:
-            self.send_keys(keys)
-
-        with self.auto_advance():
-            if after:
                 self.send_keys(after, literal=False)
 
     @contextmanager
@@ -215,4 +236,4 @@ class Session(object):
         self.auto_advancing = initial_auto_state
 
 
-__all__ = [send_keys, Session]
+__all__ = ['send_keys', 'Session']

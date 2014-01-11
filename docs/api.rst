@@ -1,6 +1,6 @@
 .. _api_reference:
 
-API Reference
+API reference
 =============
 
 Oraide provides a set of conveniences around tmux's ``send-keys`` command.
