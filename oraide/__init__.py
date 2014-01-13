@@ -1,6 +1,6 @@
 """'A library to help presenters demonstrate terminal sessions hands-free."""
 
-__version__ = '0.4'
+__version__ = 'dev'
 
 import locale
 import logging
