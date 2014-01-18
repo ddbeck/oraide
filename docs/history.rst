@@ -11,6 +11,8 @@ The library's name is a portmanteau of *orate* and *aide*.
 Release dev
 -----------
 
+- Upgrade dependency from Tox 1.5.0 to Tox 1.6.1.
+
 Release 0.4
 -----------
 
