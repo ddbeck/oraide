@@ -11,7 +11,10 @@ The library's name is a portmanteau of *orate* and *aide*.
 Release dev
 -----------
 
-- Upgrade dependency from Tox 1.5.0 to Tox 1.6.1.
+- Upgraded development dependencies:
+
+  * Tox 1.5.0 → Tox 1.6.1
+  * Sphinx 1.2 → 1.2.1
 
 Release 0.4
 -----------
