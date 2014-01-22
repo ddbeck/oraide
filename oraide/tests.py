@@ -34,6 +34,8 @@ def assert_after_timeout(fn, timeout_duration=2.0):
 
 class LiveSessionMixin(object):
     def start_tmux_session(self, timeout_duration=2.0):
+        self.kill_tmux_session()
+
         logging.info('Starting tmux session: {}'.format(self.session_name))
 
         subprocess.check_call(['tmux', 'new-session', '-d',

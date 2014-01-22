@@ -11,6 +11,10 @@ The library's name is a portmanteau of *orate* and *aide*.
 Release dev
 -----------
 
+- Fixed test suite errors caused by tmux sessions left open by previous (failed) tests.
+  Test sessions are now killed before tests, as well as after,
+  to prevent failed tests from causing subsequent tests to also fail.
+
 - Upgraded development dependencies:
 
   * Tox 1.5.0 → Tox 1.6.1
