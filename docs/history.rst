@@ -8,8 +8,10 @@ The library's name is a portmanteau of *orate* and *aide*.
 
 .. _Daniel D. Beck: http://www.danieldbeck.com/
 
-Release dev
------------
+Release |version|
+-----------------
+
+- Added :pep:`386#the-new-versioning-algorithm`-compatible development version numbers.
 
 - Fixed test suite errors caused by tmux sessions left open by previous (failed) tests.
   Test sessions are now killed before tests, as well as after,
