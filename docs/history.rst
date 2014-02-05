@@ -11,6 +11,8 @@ The library's name is a portmanteau of *orate* and *aide*.
 Release |version|
 -----------------
 
+.. NEXT_VERSION_HEADER_TARGET
+
 - Added :pep:`386#the-new-versioning-algorithm`-compatible development version numbers.
 
 - Fixed test suite errors caused by tmux sessions left open by previous (failed) tests.
