@@ -1,7 +1,8 @@
 import os
 
-from invoke import run, task
+from invoke import Collection, run, task
 
+from . import docs
 import oraide
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -24,3 +25,8 @@ def increment(version):
 
     run("sed -Ei '.bak' '{0}' {1}".format(version_pattern, version_file_path))
     run("sed -Ei '.bak' '{0}' {1}".format(history_pattern, history_file_path))
+
+
+ns = Collection()
+ns.add_task(increment)
+ns.add_collection(Collection.from_module(docs))

@@ -1,10 +1,15 @@
-import argparse
 import os
-import subprocess
 import time
+
+from invoke import run, task
 
 from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
+
+DOCS_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    'docs')
+)
 
 
 class TouchFileEventHandler(PatternMatchingEventHandler):
@@ -25,17 +30,15 @@ class MakeEventHandler(PatternMatchingEventHandler):
         super(MakeEventHandler, self).__init__(*args, **kwargs)
 
     def on_any_event(self, event):
-        subprocess.call(['make', self.make_target])
+        run('cd {docs_root} && make {target}'.format(docs_root=DOCS_ROOT,
+                                                     target=self.make_target))
 
         if self.after:
-            subprocess.call(self.after, shell=True)
+            run(self.after)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--after', help="a command to run after")
-    args = parser.parse_args()
-
+@task
+def watch(after=None):
     py_event_handler = TouchFileEventHandler(
         patterns=['*.py'],
         touch_file='index.rst'
@@ -43,7 +46,7 @@ def main():
     rst_event_handler = MakeEventHandler(
         patterns=['*.rst'],
         make_target='html',
-        after=args.after)
+        after=after)
 
     observer = Observer()
     observer.schedule(py_event_handler, path='..', recursive=True)
@@ -56,6 +59,3 @@ def main():
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
-
-if __name__ == '__main__':
-    main()

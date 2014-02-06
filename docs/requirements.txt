@@ -1,8 +1,2 @@
-# for building docs
-Sphinx==1.2.1
-
-# for watching docs
-PyYAML==3.10
-argh==0.23.2
-pathtools==0.1.2
-watchdog==0.6.0
+Sphinx==1.2.1  # for building docs
+watchdog==0.7.0  # for watching docs
