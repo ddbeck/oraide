@@ -9,6 +9,16 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 @task
+def deploy(test=True):
+    """Upload the current release to PyPI.
+
+    By default, deploys to the testing PyPI site.
+    Call ``invoke deploy --no-test`` to do an actual deployment.
+    """
+    run('python setup.py sdist upload -r test')
+
+
+@task
 def increment(version):
     """Change the version number."""
     old_version = oraide.__version__
@@ -28,5 +38,6 @@ def increment(version):
 
 
 ns = Collection()
+ns.add_task(deploy)
 ns.add_task(increment)
 ns.add_collection(Collection.from_module(docs))
