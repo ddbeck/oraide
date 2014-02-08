@@ -21,7 +21,7 @@ Release |version|
 
 - Upgraded development dependencies:
 
-  * Tox 1.5.0 → Tox 1.6.1
+  * Tox 1.5.0 → Tox 1.7.0
   * Sphinx 1.2 → 1.2.1
 
 Release 0.4
