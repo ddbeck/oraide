@@ -1,3 +1,7 @@
+.. note::
+
+   This project is no longer maintained.
+
 Oraide
 ======
 
